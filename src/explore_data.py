@@ -1,5 +1,8 @@
 import pandas as pd
 customer_df=pd.read_csv(r"C:\Users\VASUNTHARA\OneDrive\Desktop\DataScience_projects\customer_churn_data_prep\data\Telco-Customer-Churn.csv")
+
+##Phase 1 Explore Dataset
+
 print("Dataset Shape:")
 print(customer_df.shape)
 print("Column Names:")
@@ -17,3 +20,27 @@ missing_totalcharges_df = customer_df[
 print("Rows with blank TotalCharges:") #tenure*monthlycharges=Totalcharge(0*x=?)
 print(missing_totalcharges_df[
         ["customerID", "tenure", "MonthlyCharges", "TotalCharges"]])
+
+##Phase 2 Data Quality Audit
+
+print("Missing Values Check:")
+print(customer_df.isnull().sum())  #includes only non-numeric columns
+
+print("Unique Values Check:")
+print(customer_df.nunique())
+
+print("Duplicate Customer IDs:")
+print(customer_df["customerID"].duplicated().sum())
+
+print("Blank Value Audit:")
+for col in customer_df.select_dtypes(include=str).columns:
+    print(col, (customer_df[col].str.strip() == "").sum())
+
+print("Gender Categories:")
+print(customer_df["gender"].value_counts(dropna=False))
+
+print("SeniorCitizen Categories:")
+print(customer_df["SeniorCitizen"].value_counts(dropna=False))
+
+print("Numeric Summary:")
+print(customer_df.describe())  #Audit for numeric columns
